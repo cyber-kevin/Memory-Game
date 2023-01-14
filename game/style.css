@@ -3,8 +3,6 @@ main {
     justify-content: space-around;
 }
 
-
-
 .container-cards {
     display: flex;
     flex-wrap: wrap;
