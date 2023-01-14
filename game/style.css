@@ -1,0 +1,28 @@
+main {
+    display: flex;
+    justify-content: space-around;
+}
+
+
+
+.container-cards {
+    display: flex;
+    flex-wrap: wrap;
+    width: 615px;
+    height: 410px;
+    margin-right: 100px;
+}
+
+.card{
+    width: 200px;
+    height: 200px;
+    background-color: coral;
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+
+.user-info {
+    width: 300px;
+    height: 405px;
+    background-color: rgb(219, 214, 214);
+}
