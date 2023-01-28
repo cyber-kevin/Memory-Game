@@ -1,6 +1,19 @@
+body, #title {
+    transition: all 1s;
+}
+
+img {
+    opacity: 100%;
+    transition: opacity 0.2s linear;;
+}
+
 main {
     display: flex;
     justify-content: space-around;
+}
+
+img, .card {
+    border-radius: 10px;
 }
 
 .container-cards {
@@ -20,12 +33,12 @@ main {
     background-size: 100% 100%;
 }
 
-.show {
-    background-image: url('assets/images/frog.jpg');
-}
-
 .user-info {
     width: 300px;
     height: 405px;
     background-color: rgb(219, 214, 214);
+}
+
+.hidden {
+    background-image: none;
 }
