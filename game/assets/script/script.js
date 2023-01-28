@@ -40,6 +40,11 @@ async function reorder() {
     shuffle();
 }
 
+function changeLayout() {
+    document.getElementsByTagName('body')[0].style.backgroundColor = "#1a1919";
+    document.getElementById('title').style.color = "#d2d233";
+}
+
 const cards = document.querySelectorAll('.card');
 const lock = [];
 for (let i=0; i<cards.length; i++) {
@@ -93,6 +98,7 @@ for(let i=0; i<cards.length; i++) {
                 for (let i=0; i<cards.length; i++) {
                     getImage(cards[i]).style.opacity = '100%';
                 }
+                changeLayout();
             }
 
         }
