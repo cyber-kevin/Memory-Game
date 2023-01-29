@@ -38,7 +38,7 @@ img, .card {
 .card{
     width: 150px;
     height: 150px;
-    background-color: coral;
+    background-color: #ff7f50;
     margin-left: 8px;
     margin-bottom: 15px;
     background-size: 100% 100%;

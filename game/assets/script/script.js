@@ -45,6 +45,39 @@ function changeLayout() {
     document.getElementById('title').style.color = "#d2d233";
 }
 
+numberOfCards = prompt('Choose the number of cards (Press "OK" to default option): ');
+
+if (numberOfCards != 6) {
+
+    let quantity = numberOfCards - 6;
+    const animals = ['bird', 'elephant', 'frog'];
+    let pos = Math.trunc(Math.random() * 3);
+    let count = 0;
+
+    for (let i=0; i<quantity; i++) {
+        count++;
+        div = document.createElement('div');
+        img = document.createElement('img');
+        div.classList.add('card');
+        img.src = `assets/images/${animals[pos]}.jpg`;
+        img.style.width = '150px';
+        img.style.height = '150px';
+        div.appendChild(img);
+        document.querySelector('.container-cards').appendChild(div);
+
+        if (count == 2) {
+            pos = Math.trunc(Math.random() * 3);
+            count = 0;
+        }
+    }
+}
+
+
+while (numberOfCards % 2 != 0 || numberOfCards == null) {
+    alert('Please, choose a even number. (ex.: 6, 8, 10, 12...)');
+    numberOfCards = prompt('Choose the number of cards (Default is 6): ');
+}
+
 const cards = document.querySelectorAll('.card');
 const lock = [];
 for (let i=0; i<cards.length; i++) {
