@@ -34,10 +34,10 @@ async function reorder() {
     await sleep(700);
     getImage(cards[selected[0]]).style.opacity = '0%';
     getImage(cards[selected[1]]).style.opacity = '0%';
-    canPlay = true;
     selected = [];
     await sleep(500);
     shuffle();
+    canPlay = true;
 }
 
 function changeLayout() {
