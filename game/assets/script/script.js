@@ -14,19 +14,28 @@ function getImage(element) {
 }
 
 function shuffle() {
-    let randomNumber = Math.trunc((Math.random() * (cards.length - 1 )));
-    let anotherRandomNumber = Math.trunc((Math.random() * (cards.length - 1 )));
 
-    while (lock[randomNumber]) {
-        randomNumber =  Math.trunc((Math.random() * (cards.length - 1 )));;
-    }
-    while (lock[anotherRandomNumber]) {
-        anotherRandomNumber =  Math.trunc((Math.random() * (cards.length - 1 )));
+    for (let i=0; i<cards.length; i++) {
+        let randomNumber = Math.trunc((Math.random() * (cards.length - 1 )));
+        let anotherRandomNumber = Math.trunc((Math.random() * (cards.length - 1 )));
+
+        while (randomNumber == anotherRandomNumber) {
+            randomNumber = Math.trunc((Math.random() * (cards.length - 1 )));
+            anotherRandomNumber = Math.trunc((Math.random() * (cards.length - 1 )));
+        }
+
+        while (lock[randomNumber]) {
+            randomNumber =  Math.trunc((Math.random() * (cards.length - 1 )));;
+        }
+        while (lock[anotherRandomNumber]) {
+            anotherRandomNumber =  Math.trunc((Math.random() * (cards.length - 1 )));
+        }
+
+        const aux = getImage(cards[randomNumber]).src;
+        getImage(cards[randomNumber]).src = getImage(cards[anotherRandomNumber]).src;
+        getImage(cards[anotherRandomNumber]).src = aux;
     }
 
-    const aux = getImage(cards[randomNumber]).src;
-    getImage(cards[randomNumber]).src = getImage(cards[anotherRandomNumber]).src;
-    getImage(cards[anotherRandomNumber]).src = aux;
 }
 
 async function reorder() {
@@ -47,11 +56,17 @@ function changeLayout() {
 
 numberOfCards = prompt('Choose the number of cards (Press "OK" to default option): ');
 
+while (numberOfCards % 2 != 0 || numberOfCards == null) {
+    alert('Please, choose a even number between 6 and 20. (ex.: 6, 8, 10, 12, 14, 16, 18, 20)');
+    numberOfCards = prompt('Choose the number of cards (Default is 6): ');
+}
+
 if (numberOfCards != 6) {
 
     let quantity = numberOfCards - 6;
-    const animals = ['bird', 'elephant', 'frog'];
-    let pos = Math.trunc(Math.random() * 3);
+    const animals = ['bird', 'butterfly', 'deer', 'elephant', 'frog',];
+    let pos = Math.trunc(Math.random() * (animals.length - 1));
+    console.log('pos: ' + pos);
     let count = 0;
 
     for (let i=0; i<quantity; i++) {
@@ -66,16 +81,33 @@ if (numberOfCards != 6) {
         document.querySelector('.container-cards').appendChild(div);
 
         if (count == 2) {
-            pos = Math.trunc(Math.random() * 3);
+            let aux = pos;
+            pos = Math.trunc(Math.random() * (animals.length - 1));
+
+            console.log(aux, pos);
+
+            while (aux === pos) {
+                pos = Math.trunc(Math.random() * (animals.length - 1));
+            }
+
             count = 0;
         }
     }
 }
 
+if (numberOfCards >= 10) {
+    const cards = document.querySelectorAll('.card');
+    const images = document.querySelectorAll('img');
 
-while (numberOfCards % 2 != 0 || numberOfCards == null) {
-    alert('Please, choose a even number. (ex.: 6, 8, 10, 12...)');
-    numberOfCards = prompt('Choose the number of cards (Default is 6): ');
+    cards.forEach(card => {
+        card.style.width = '100px';
+        card.style.height = '100px';
+    });
+
+    images.forEach(image => {
+        image.style.width = '100px';
+        image.style.height = '100px';
+    });
 }
 
 const cards = document.querySelectorAll('.card');
