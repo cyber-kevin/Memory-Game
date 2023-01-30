@@ -83,9 +83,11 @@ numberOfCards = Number(numberOfCards);
 
 switch (numberOfCards) {
     case 6:
-        milliseconds = 380;
+        milliseconds = 480;
         break;
     case 8:
+        milliseconds = 1100;
+        break;
     case 10:
         milliseconds = 1800;
         break;
