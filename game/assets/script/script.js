@@ -4,8 +4,8 @@ async function sleep(ms) {
     return new Promise(r => setTimeout(r, ms));
 }
 
-async function showAndHide() {
-    await sleep(1000);
+const showAndHide = async function(milliseconds) {
+    await sleep(milliseconds);
     cards.forEach(card => getImage(card).style.opacity = '0%');
 }
 
@@ -54,11 +54,39 @@ function changeLayout() {
     document.getElementById('title').style.color = "#d2d233";
 }
 
-numberOfCards = prompt('Choose the number of cards (Press "OK" to default option): ');
+numberOfCards = Number(prompt('Choose the number of cards (Press "OK" to default option): '));
+let milliseconds; 
 
-while (numberOfCards % 2 != 0 || numberOfCards == null) {
+if (numberOfCards === '') {
+    numberOfCards = 6;
+}
+
+console.log(numberOfCards);
+
+while (numberOfCards % 2 != 0 || (numberOfCards < 6 || numberOfCards > 20) || numberOfCards == null) {
     alert('Please, choose a even number between 6 and 20. (ex.: 6, 8, 10, 12, 14, 16, 18, 20)');
     numberOfCards = prompt('Choose the number of cards (Default is 6): ');
+}
+
+switch (numberOfCards) {
+    case 6:
+        milliseconds = 380;
+        break;
+    case 8:
+    case 10:
+        milliseconds = 1800;
+        break;
+    case 12:
+    case 14:
+        milliseconds = 2500;
+        break;
+    case 16:
+        milliseconds = 2800;
+        break;
+    case 18:
+    case 20:
+        milliseconds = 3500;
+        break;
 }
 
 if (numberOfCards != 6) {
@@ -121,7 +149,7 @@ let canPlay = false;
 
 shuffle();
 // Hide the cards images
-showAndHide();
+showAndHide(milliseconds);
 canPlay = true;
 
 for(let i=0; i<cards.length; i++) {
