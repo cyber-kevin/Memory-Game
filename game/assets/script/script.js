@@ -5,8 +5,15 @@ async function sleep(ms) {
 }
 
 const showAndHide = async function(milliseconds) {
+    cards.forEach(card => getImage(card).style.opacity = '100%');
     await sleep(milliseconds);
-    cards.forEach(card => getImage(card).style.opacity = '0%');
+
+    for (let i=0; i<cards.length; i++) {
+        if (!lock[i]) {
+            getImage(cards[i]).style.opacity = '0%';
+        }
+    }
+
 }
 
 function getImage(element) {
@@ -41,17 +48,17 @@ function shuffle() {
 async function reorder() {
     canPlay = false;
     await sleep(700);
-    getImage(cards[selected[0]]).style.opacity = '0%';
-    getImage(cards[selected[1]]).style.opacity = '0%';
     selected = [];
     await sleep(500);
     shuffle();
+    showAndHide(milliseconds);
     canPlay = true;
 }
 
 function changeLayout() {
     document.getElementsByTagName('body')[0].style.backgroundColor = "#1a1919";
     document.getElementById('title').style.color = "#d2d233";
+    cards.forEach(card => getImage(card).style.filter = 'brightness(100%)');
 }
 
 function updateScore() {
@@ -127,8 +134,6 @@ if (numberOfCards != 6) {
             let aux = pos;
             pos = Math.trunc(Math.random() * (animals.length - 1));
 
-            console.log(aux, pos);
-
             while (aux === pos) {
                 pos = Math.trunc(Math.random() * (animals.length - 1));
             }
@@ -177,8 +182,12 @@ for(let i=0; i<cards.length; i++) {
             selected.push(i);
 
             if (selected.length == 2) {
+                const image1 = getImage(cards[selected[0]]);
+                const image2 = getImage(cards[selected[1]]);
                 // If the two cards selected are different but they have the same image...
-                if ((selected[0] != selected[1]) && getImage(cards[selected[0]]).src == getImage(cards[selected[1]]).src) {
+                if ((selected[0] != selected[1]) && image1.src == image2.src) {
+                    image1.style.filter = 'brightness(70%)';
+                    image2.style.filter = 'brightness(70%)';
                     lock[selected[0]] = true;
                     lock[selected[1]] = true;
                     selected = [];
