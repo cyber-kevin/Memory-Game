@@ -54,19 +54,32 @@ function changeLayout() {
     document.getElementById('title').style.color = "#d2d233";
 }
 
-numberOfCards = Number(prompt('Choose the number of cards (Press "OK" to default option): '));
+function updateScore() {
+    score+=10;
+    matches+=1;
+    document.getElementById('matches').textContent = matches;
+    document.getElementById('score').textContent = score;
+}
+
+let score = Number(document.getElementById('score').textContent);
+let matches = Number(document.getElementById('matches').textContent);
+let numberOfCards = prompt('Choose the number of cards (Press "OK" or "Enter" to default option): ');
 let milliseconds; 
 
 if (numberOfCards === '') {
     numberOfCards = 6;
 }
 
-console.log(numberOfCards);
-
 while (numberOfCards % 2 != 0 || (numberOfCards < 6 || numberOfCards > 20) || numberOfCards == null) {
     alert('Please, choose a even number between 6 and 20. (ex.: 6, 8, 10, 12, 14, 16, 18, 20)');
-    numberOfCards = prompt('Choose the number of cards (Default is 6): ');
+    numberOfCards = prompt('Choose the number of cards (Press "OK" or "Enter" to default option): ');
+
+    if (numberOfCards === '') {
+        numberOfCards = 6;
+    }
 }
+
+numberOfCards = Number(numberOfCards);
 
 switch (numberOfCards) {
     case 6:
@@ -167,6 +180,7 @@ for(let i=0; i<cards.length; i++) {
                     lock[selected[0]] = true;
                     lock[selected[1]] = true;
                     selected = [];
+                    updateScore();
                 }
                 else {
                     reorder();
@@ -187,6 +201,7 @@ for(let i=0; i<cards.length; i++) {
             }
 
             if (win) {
+                updateScore();
                 canPlay = false;
                 for (let i=0; i<cards.length; i++) {
                     getImage(cards[i]).style.opacity = '100%';

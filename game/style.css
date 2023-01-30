@@ -63,6 +63,14 @@ img, .card {
     letter-spacing: 1.5px;
 }
 
+.container-matches {
+    display: flex;
+}
+
+.container-score {
+    display: flex;
+}
+
 #contact {
     margin-top: auto;
 }
@@ -71,9 +79,6 @@ img, .card {
     color: #0b73dc;
 }
 
-.hidden {
-    background-image: none;
-}
 
 @media only screen and (max-width: 400px) {
     
