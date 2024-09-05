@@ -85,6 +85,21 @@ img, .card {
     color: #0b73dc;
 }
 
+.count {
+    width: 100%;
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 100pt;
+    opacity: 1;
+    transition: opacity 0.5s linear;
+}
+
+.hide {
+    display: none;
+}
+
 /* Styles for screens up to 350px */
 @media only screen and (max-width: 350px) {
 

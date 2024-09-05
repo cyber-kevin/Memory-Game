@@ -1,4 +1,4 @@
-'use_strict';
+'use strict';
 
 async function sleep(ms) {
     return new Promise(r => setTimeout(r, ms));
@@ -41,17 +41,10 @@ function shuffle(cards, lock) {
         let randomNumber1 = generateRandomNumber(cards.length);
         let randomNumber2 = generateRandomNumber(cards.length);
 
-        while (randomNumber1 == randomNumber2) {
+        while (randomNumber1 == randomNumber2 || lock[randomNumber1] || lock[randomNumber2]) {
             randomNumber1 = generateRandomNumber(cards.length);
             randomNumber2 = generateRandomNumber(cards.length);
-        }
-
-        while (lock[randomNumber1]) {
-            randomNumber1 =  generateRandomNumber(cards.length);;
-        }
-        while (lock[randomNumber2]) {
-            randomNumber2 =  generateRandomNumber(cards.length);
-        }
+        }        
 
         const aux = getImage(cards[randomNumber1]).src;
         getImage(cards[randomNumber1]).src = getImage(cards[randomNumber2]).src;
@@ -100,11 +93,11 @@ function updateScore() {
  * @param {Number} numberOfCards
  * @return {Boolean}
  */
-function inputIsValid (numberOfCards) {
+function inputIsValid(numberOfCards) {
     const validation1 = numberOfCards % 2 === 0;
     const validation2 = numberOfCards >= 6 || numberOfCards <= 20;
 
-    return validation1 && validation2
+    return validation1 && validation2;
 }
 
 /**
@@ -112,9 +105,9 @@ function inputIsValid (numberOfCards) {
  *
  * @return {Number}
  */
-function getNumberOfCards () {
+function getNumberOfCards() {
     const input = prompt('Choose the number of cards (Press "OK" or "Enter" to default option): ');
-    return input === '' ? 6 : Number(input)
+    return input === '' ? 6 : Number(input);
 }
 
 /**
@@ -122,9 +115,9 @@ function getNumberOfCards () {
  *
  * @param {String} animal
  */
-function generateAnimalCard (animal) {
-    div = document.createElement('div');
-    img = document.createElement('img');
+function generateAnimalCard(animal) {
+    const div = document.createElement('div');
+    const img = document.createElement('img');
     div.classList.add('card');
     img.src = `assets/images/${animal}.jpg`;
     img.style.width = '150px';
@@ -139,14 +132,51 @@ function generateAnimalCard (animal) {
  * @param {String} limit
  * @return {Number}
  */
-function generateRandomNumber (limit) {
-    return Math.trunc(Math.random() * limit)
+function generateRandomNumber(limit) {
+    return Math.trunc(Math.random() * limit);
+}
+
+/**
+ * Hides the gaming elements and calls the function to display the counter on the screen.
+ */
+async function prepareForCounter() {
+    document.querySelector('.container-cards').classList.add('hide');
+    document.querySelector('.user-info').classList.add('hide');
+    document.querySelector('.count').classList.remove('hide');
+    
+    await activateCounter();
+}
+
+/**
+ * Displays a counter in the middle of the screen.
+ * Starts the game after the count.
+ */
+async function activateCounter() {
+    for (let i=3; i>0; i--) {
+        document.querySelector('.count').style.opacity = 0;
+        await sleep(1000);
+        
+        document.querySelector('.count').textContent = i;
+        document.querySelector('.count').style.opacity = 1;
+        await sleep(1000);
+    }
+    document.querySelector('.count').style.opacity = 0;
+    
+    startGame();
+}
+
+/**
+ * Removes the counter and displays the game.
+ */
+function startGame () {
+    document.querySelector('.container-cards').classList.remove('hide');
+    document.querySelector('.user-info').classList.remove('hide');
+    document.querySelector('.count').classList.add('hide');
 }
 
 /**
  * An object mapping the number of cards chosen
  * to the number of milisseconds required to display the cards.
- *
  */
 const getMilisseconds = {
     6: 480,
@@ -160,12 +190,15 @@ const getMilisseconds = {
 }
 
 let numberOfCards = getNumberOfCards();
+
 let milliseconds; 
 
 while (!inputIsValid(numberOfCards)) {
     alert('Please, choose an even number between 6 and 20. (ex.: 6, 8, 10, 12, 14, 16, 18, 20)');
     numberOfCards = getNumberOfCards();
 }
+
+prepareForCounter();
 
 milliseconds = getMilisseconds[numberOfCards];
 
@@ -217,6 +250,7 @@ let won = false;
 let canPlay = false;
 
 shuffle(cards, lock);
+
 // Hides the cards images.
 showAndHide(cards, lock, milliseconds);
 canPlay = true;
@@ -229,15 +263,18 @@ for(let i=0; i<cards.length; i++) {
             // Shows the card's image.
             getImage(this).style.opacity = '100%';
 
-            // Saves the index of the chosen card.
-            selected.push(i);
+            // Saves the index of the chosen card if was not already selected.
+            if (!selected.includes(i)) {
+                selected.push(i);
+            }
 
+            // If the user selected 2 cards, proceeds with the operations.
             if (selected.length == 2) {
                 const image1 = getImage(cards[selected[0]]);
                 const image2 = getImage(cards[selected[1]]);
 
-                // If the two selected cards are different but they have the same image...
-                if ((selected[0] != selected[1]) && image1.src == image2.src) {
+                // If the two selected cards have the same image, proceeds with the operations; otherwise, reorders the cards.
+                if (image1.src == image2.src) {
                     image1.style.filter = 'brightness(70%)';
                     image2.style.filter = 'brightness(70%)';
 
@@ -255,7 +292,6 @@ for(let i=0; i<cards.length; i++) {
             }
 
             // Verifies wether the player won the game.
-
             let count = lock.filter(lockedCard => lockedCard === true).length
 
             if (count == cards.length - 2) {
